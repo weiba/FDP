@@ -78,7 +78,7 @@ matrixFuse<- function(...,fmode){
       for(i in 1:length(affM)){
         tempList<-c(tempList,EuclidDistance(result,affM[[i]]))#result和剩余所有子网之间的距离
       }
-      num<-which(tempList==min(tempList),arr.ind = TRUE)#获取最小距离的子网在列表中的位置序列
+      num<-which(tempList==min(tempList),arr.ind = TRUE)[1]#获取最小距离的子网在列表中的位置序列,距离一样的情况取一个
       result<-SNF(list(result,affM[[num]]),k,t)#融合
       affM<-affM[-num]#删除掉融合后的矩阵(affM[[num]])
     }
@@ -99,8 +99,8 @@ matrixFuse<- function(...,fmode){
           distanceMatrix[i,j]<-EuclidDistance(affM[[i]],affM[[j]])
         }
       }
-      num1<-which(distanceMatrix==min(distanceMatrix),arr.ind = TRUE)[1]#行对应的蛋白质
-      num2<-which(distanceMatrix==min(distanceMatrix),arr.ind = TRUE)[2]#列对应的蛋白质
+      num1<-which(distanceMatrix==min(distanceMatrix),arr.ind = TRUE)[1,1]#行对应的蛋白质
+      num2<-which(distanceMatrix==min(distanceMatrix),arr.ind = TRUE)[1,2]#列对应的蛋白质
       result<-SNF(list(affM[[i]],affM[[j]]),k,t)#融合对应蛋白质
       affM<-affM[-c(num1,num2)]   #把对应蛋白质从列表里删除
       affM[[length(affM)+1]]<-result    #加入融合后的矩阵

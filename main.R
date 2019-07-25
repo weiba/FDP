@@ -1,5 +1,5 @@
 library(SNFtool)
-source("dataLoad.R")#AP、SP1~12、ECC
+source("dataLoad.R",encoding = "utf-8")#AP、SP1~12、ECC
 source("toMatrix.R")#MatrixSP1~12
 source("matrixFuse.R")
 source("resultNum.R")
@@ -54,7 +54,9 @@ entropyResult<-EntropyRank(weightMatrix,20)
 a<-0.8
 EDresult<-matrix(NA,nrow = nrow(entropyResult),ncol = 2)
 EDresult[,1]<-entropyResult[,1]
-EDresult[,2]<-a*as.numeric(Diffresult[,2])+(1-a)*as.numeric(entropyResult[,2])
+EDresult[,2]<-a*as.numeric(Diffresult[,2])+
+              (1-a)*(as.numeric(entropyResult[,2])-min(as.numeric(entropyResult[,2])))/
+              (max(as.numeric(entropyResult[,2]))-min(as.numeric(entropyResult[,2])))
 resultNum(EDresult,100,200,300,400)
 
 

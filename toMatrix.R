@@ -3,28 +3,22 @@
   newName<-list(allElements,allElements)
 
   #############0-1权值############
-toDegreeMatrix<-function(sp){
-  gc()
-  
-  dMatrix<-matrix(data = 0,nrow = length(allElements),ncol = length(allElements),dimnames = newName)
-
-  for(i in 1:length(allElements)){#1:nrow(dMatrix 或 wMatrix)也行
-    for(j in i:length(allElements)){#i:nrow(dMatrix 或 wMatrix)也行
-    
-      if(colnames(dMatrix)[j] %in% sp[which(rownames(dMatrix)[i]==sp[,1],arr.ind = TRUE),2]){
-        dMatrix[i,j]<-1
-        dMatrix[j,i]<-1
-        next
-      }
-      if(colnames(dMatrix)[j] %in% sp[which(rownames(dMatrix)[i]==sp[,2],arr.ind = TRUE),1]){
-        dMatrix[i,j]<-1
-        dMatrix[j,i]<-1
-        next
+  toDegreeMatrix<-function(sp)
+  {
+    dMatrix<-matrix(data = 0,nrow = length(allElements),ncol = length(allElements),dimnames = newName)
+    for(i in 1:length(sp$V1)){#1:nrow(dMatrix 或 wMatrix)也行
+      if(as.character(sp$V1[i]) %in% allElements & as.character(sp$V2[i]) %in% allElements)
+      {
+        dMatrix[as.character(sp$V1[i]),as.character(sp$V2[i])]<-1
+        dMatrix[as.character(sp$V2[i]),as.character(sp$V1[i])]<-1
       }
     }
+    if(length(which(dMatrix>1))>0)
+    {
+      stop("输入文件有重复边")
+    }
+    return(dMatrix)
   }
-  return(dMatrix)
-}
 
 
 
